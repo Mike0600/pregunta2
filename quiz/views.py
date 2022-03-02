@@ -1,3 +1,4 @@
+from unicodedata import category
 from .models import Answer, Question
 from rest_framework import viewsets
 from rest_framework.views import APIView
@@ -20,12 +21,12 @@ class AnswerViewSet(viewsets.ModelViewSet):
 
 class GetRandomQuestion(APIView):
     def get(self, request, format=None):
-        random_question = Question.objects.none()
-        answers = Answer.objects.none()
-        random_question = Question.objects.order_by('?')[:1:0]
-        answers = Answer.objects.filter(question_id=random_question.values('id'))
+        q_category = request.GET['category']
+        random_question = Question.objects.filter(category=q_category).order_by('?').first()
+        answers = Answer.objects.filter(question_id=random_question.id)
         data = {
-            'question' : random_question.values(),
+            'question' : QuestionSerializer(random_question).data,
             'answers' : answers.values(),
         }
         return Response(data)
+        
