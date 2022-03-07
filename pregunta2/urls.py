@@ -1,16 +1,11 @@
 from django.urls import include, path
-from rest_framework import routers
-from quiz import views
-
-router = routers.DefaultRouter()
-router.register(r'questions', views.QuestionViewSet)
-router.register(r'answers', views.AnswerViewSet)
-
-
+from django.contrib import admin
+from quiz import urls as quiz_urls
+from users import urls as user_urls
 
 urlpatterns = [
-    #path('admin/', admin.site.urls),
-    path('', include(router.urls)),
-    path("random_question/", views.GetRandomQuestion.as_view()),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('quiz/', include(quiz_urls, namespace='quiz')),
+    path('users/', include(user_urls, namespace='users'))
 ]

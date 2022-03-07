@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'quiz'
+    'quiz',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +69,9 @@ TEMPLATES = [
         },
     },
 ]
+
+
+AUTH_USER_MODEL = 'users.User'
 
 WSGI_APPLICATION = 'pregunta2.wsgi.application'
 

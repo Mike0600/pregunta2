@@ -22,7 +22,10 @@ class AnswerViewSet(viewsets.ModelViewSet):
 class GetRandomQuestion(APIView):
     def get(self, request, format=None):
         q_category = request.GET['category']
-        random_question = Question.objects.filter(category=q_category).order_by('?').first()
+        if q_category == 'AN':
+            random_question = Question.objects.order_by('?').first()
+        else:
+            random_question = Question.objects.filter(category=q_category).order_by('?').first()
         answers = Answer.objects.filter(question_id=random_question.id)
         data = {
             'question' : QuestionSerializer(random_question).data,
