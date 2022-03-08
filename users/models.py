@@ -35,14 +35,14 @@ class User(AbstractBaseUser):
     #id = models.UUIDField(default=uuid4, primary_key=True, unique=True)
     email = models.EmailField(verbose_name="email", max_length=60, unique=True, blank=False)
     username = models.CharField(max_length=30, unique=True,)
-    date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
+    date_joined = models.DateTimeField(verbose_name="date joined", auto_now=True)
     last_login = models.DateTimeField(verbose_name="last login", auto_now_add=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
-    question = models.ForeignKey(Question, on_delete=models.DO_NOTHING)
+    #question = models.ForeignKey(Question, on_delete=models.DO_NOTHING)
 
 
     USERNAME_FIELD = 'email'
