@@ -1,10 +1,12 @@
-from django.shortcuts import render
-from .serializers import UserLoginSerializer, UserSerializer, UserSignUpSerializer
-from rest_framework import viewsets
-from .models import User
+#Rest
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework import viewsets
+from rest_framework.decorators import api_view
 
+#Local
+from .serializers import UserLoginSerializer, UserSerializer, UserSignUpSerializer
+from .models import User
 
 # Create your views here.
 class UserViewSet(viewsets.ModelViewSet):

@@ -1,7 +1,12 @@
+#Utils
 from uuid import uuid4
+
+#Django
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from quiz.models import Question
+
+#Local
+
 
 
 class UserManager(BaseUserManager):

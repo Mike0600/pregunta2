@@ -1,33 +1,35 @@
-from unicodedata import category
-from .models import Answer, Question
+#Rest
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import AnswerSerializer, QuestionSerializer
+from rest_framework.decorators import action
 
-import uuid
+#Local
+from .serializers import AnswerSerializer, QuestionSerializer, QuestionarySerializer
+from .models import AnswerUser, QuestionUser, QuestionaryUser
 
-# Create your views here.
 
+class QuestionaryViewSet(viewsets.ModelViewSet):
+    queryset = QuestionaryUser.objects.all()
+    serializer_class = QuestionarySerializer
 
 class QuestionViewSet(viewsets.ModelViewSet):
-    queryset = Question.objects.all()
+    queryset = QuestionUser.objects.all()
     serializer_class = QuestionSerializer
     
 class AnswerViewSet(viewsets.ModelViewSet):
-    queryset = Answer.objects.all()
+    queryset = AnswerUser.objects.all()
     serializer_class = AnswerSerializer
 
 
 class GetRandomQuestion(APIView):
     def get(self, request, format=None):
-        q_category = request.GET['category']
-        if q_category == 'AN':
-            random_question = Question.objects.order_by('?').first()
-        else:
-            random_question = Question.objects.filter(category=q_category).order_by('?').first()
-        answers = Answer.objects.filter(question_id=random_question.id)
+        q_category = request.GET['questionary']
+        questionary = QuestionaryUser.objects.get(name=q_category)
+        random_question = QuestionUser.objects.filter(questionary=questionary.id).order_by('created_date').first()
+        answers = AnswerUser.objects.filter(question_id=random_question.id)
         data = {
+            'questionary': QuestionarySerializer(questionary).data,
             'question' : QuestionSerializer(random_question).data,
             'answers' : answers.values(),
         }

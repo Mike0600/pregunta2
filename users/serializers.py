@@ -1,15 +1,20 @@
-from enum import unique
-from unittest.util import _MAX_LENGTH
+#Rest
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import password_validation, authenticate
 from rest_framework.validators import UniqueValidator
+
+#Django
+from django.contrib.auth import password_validation, authenticate
+
+#Local
 from .models import User
+
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email', 'username']
+        fields = ['username', 'email', 'id']
     
 
 

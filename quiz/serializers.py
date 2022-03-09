@@ -1,14 +1,27 @@
+#Rest
 from rest_framework import serializers
-from .models import Question, Answer
+
+#Local
+from .models import QuestionaryUser, AnswerUser, QuestionUser
+
+
+class QuestionarySerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = QuestionaryUser
+        fields = '__all__'
+
 
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Question
+        model = QuestionUser
         fields = '__all__'
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Answer
+        model = AnswerUser
         fields = '__all__'
+
+
 
