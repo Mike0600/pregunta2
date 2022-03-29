@@ -5,7 +5,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 
 #Local
-from .serializers import UserLoginSerializer, UserSerializer, UserSignUpSerializer
+from .serializers import UserLoginSerializer, UserSerializer, UserSerializerResponse, UserSignUpSerializer
 from .models import User
 
 # Create your views here.
@@ -19,7 +19,7 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         user, token = serializer.save()
         data = {
-            'user': UserSerializer(user).data,
+            'user': UserSerializerResponse(user).data,
             'access_token': token
         }
         return Response(data)
@@ -29,5 +29,7 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = UserSignUpSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        data = UserSerializer(user).data
+        data = UserSerializerResponse(user).data
         return Response(data)
+
+    

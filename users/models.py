@@ -32,12 +32,13 @@ class UserManager(BaseUserManager):
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
+        
         return user
 
 
 
 class User(AbstractBaseUser):
-    #id = models.UUIDField(default=uuid4, primary_key=True, unique=True)
+    id = models.UUIDField(default=uuid4, primary_key=True, unique=True)
     email = models.EmailField(verbose_name="email", max_length=60, unique=True, blank=False)
     username = models.CharField(max_length=30, unique=True,)
     date_joined = models.DateTimeField(verbose_name="date joined", auto_now=True)

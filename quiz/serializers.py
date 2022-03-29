@@ -6,7 +6,6 @@ from .models import QuestionaryUser, AnswerUser, QuestionUser
 
 
 class QuestionarySerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = QuestionaryUser
         fields = '__all__'
