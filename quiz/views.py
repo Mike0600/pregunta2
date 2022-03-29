@@ -49,12 +49,19 @@ class QuestionaryViewSet(viewsets.ModelViewSet):
     def delete(self, request):
         user_info = serializers.UserSerializerResponse(request.user).data
         question = QuestionaryUser.objects.get(id=request.data['id'])
-        print(type(QuestionarySerializer(question).data['created_by']))
-        print(type(user_info['id']))
-        if str(QuestionarySerializer(question).data['created_by']) == user_info['id']:
+        serializer = QuestionarySerializer(question)
+        if str(serializer.data['created_by']) == user_info['id']:
             question.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+    @action(methods=['put'], detail=False)
+    def put(self, request): 
+        questionary = QuestionaryUser.objects.get(id=request.data['id'])
+        questionary.is_public = request.data['is_public']
+        questionary.name = request.data['name']
+        questionary.save()
+        return Response(QuestionarySerializer(questionary).data)
 
 
 
@@ -85,25 +92,28 @@ class QuestionViewSet(viewsets.ModelViewSet):
 def getQuestionary(request):
     query = QuestionUser.objects.filter(questionary=request.data['questionary'])
     return Response(query.values())
-
-@api_view(['GET', 'PUT'])
-def getQuestion(request):
-    if request.method == 'GET':
-        queryQuestion = QuestionUser.objects.get(id=request.data['id'])
-        queryAnswers = AnswerUser.objects.filter(question=queryQuestion.id)
-        if queryQuestion:
-            data = {
-                'question' : QuestionSerializer(queryQuestion).data,
-                'answers' : queryAnswers.values()
-            }
-            return Response(data)
-        return Response(status=status.HTTP_404_NOT_FOUND)
     
-    #elif request.method == 'PUT':
 
-
-
-
+@api_view(['GET'])
+def getQuestion(request):
+    queryQuestion = QuestionUser.objects.get(id=request.data['id'])
+    queryAnswers = AnswerUser.objects.filter(question=queryQuestion.id)
+    if queryQuestion:
+        data = {
+            'question' : QuestionSerializer(queryQuestion).data,
+            'answers' : queryAnswers.values()
+        }
+        return Response(data)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    
+@api_view(['PUT'])
+def updateQuestion(request):
+    queryQuestion = QuestionUser.objects.get(id=request.data['id'])
+    queryQuestion.text_question = request.data['text_question']
+    queryQuestion.save()
+    serializer = QuestionSerializer(queryQuestion)
+    return Response(serializer, status=status.HTTP_202_ACCEPTED)
 
 class AnswerViewSet(viewsets.ModelViewSet):
     queryset = AnswerUser.objects.all()
