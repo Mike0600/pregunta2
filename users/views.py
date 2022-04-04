@@ -10,7 +10,7 @@ from .models import User
 
 # Create your views here.
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.none()
     serializer_class = UserSerializer
 
     @action(detail=False, methods=['post'])
